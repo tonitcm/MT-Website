@@ -1,0 +1,27 @@
+/* login button from home-page */
+#login {
+
+
+    margin-right: 15px;
+}
+
+
+#cart-icon {
+
+    width: 40px;
+}
+
+/* Border table for cart order */
+.borderless td, .borderless th {
+    border: none;
+}
+
+.imgarrows {
+
+    position: relative;
+    top: 84px;
+    margin-left: 465px;
+    margin-right: auto;
+    width: 10px;
+    display: block;
+}

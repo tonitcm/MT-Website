@@ -1,0 +1,63 @@
+{% extends "shop/layout.html" %}
+{% load static %}
+
+{% block name %}
+
+<div class="container" style = "margin-top: 20px;">
+    <div class="row justify-content-center" style = "">
+        <div class="col-sm-4" style="">
+          <img class="card-img-top" src="{% static 'images/format.png' %}" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Product 1</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          </div>
+          <div class="card-body">
+            <a href="#" class="btn btn-outline-success">View</a>
+            <a href="#" class="btn btn-outline-success">Add to Cart</a>
+            <h5 style="display: inline-block;float:right;">$20</h5>
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          <img class="card-img-top" src="{% static 'images/format.png' %}" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Product 2</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          </div>
+          <div class="card-body">
+            <a href="#" class="btn btn-outline-success">View</a>
+            <a href="#" class="btn btn-outline-success">Add to Cart</a>
+            <h5 style="display: inline-block;float:right;">$20</h5>
+          </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center" style = "">
+        <div class="col-sm-4" style="">
+          <img class="card-img-top" src="{% static 'images/format.png' %}" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Product 1</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          </div>
+          <div class="card-body button">
+            <a href="#" class="btn btn-outline-success">View</a>
+            <a href="#" class="btn btn-outline-success">Add to Cart</a>
+            <h5 style="display: inline-block;float:right;">$20</h5>
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          <img class="card-img-top" src="{% static 'images/format.png' %}" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Product 2</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          </div>
+          <div class="card-body">
+            <a href="#" class="btn btn-outline-success">View</a>
+            <a href="#" class="btn btn-outline-success">Add to Cart</a>
+            <h5 style="display: inline-block;float:right;">$20</h5>
+          </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "shop/layout.html" %}
+{% load static %}
+
+
+{% block name %}
+
+<br>
+<div class="container">
+    <div class="row justify-content-center" >
+        <div class="card w-75">
+          <div class="card-body">
+            <a href="{% url 'gallery' %}" class="btn btn-outline-dark">&#x2190; Continue Shopping</a>
+            <p>
+              <table class="table borderless">
+                  <tbody>
+                      <td>Account Name</td>
+                      <td>Items</td>
+                      <th class="text-right">Total cost:</th>
+              </table>
+            </p>
+            <a href="#" class="btn btn-outline-success float-right">Checkout</a>
+          </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row justify-content-center" >
+        <div class="card w-75">
+          <div class="card-body">
+              <table class="table borderless">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th>Product</th>
+                      <th class="text-right" scope="col">Item</th>
+                      <th class="text-right" scope="col">Quantity</th>
+                      <th class="text-right" scope="col">Unit Price</th>
+                      <th class="text-right" scope="col">Total Price</th>
+                    </tr>
+                  </thead>
+                   <tbody>
+                        <tr>
+                          <th scope="row"> <img style="width: 100px;" src="{% static 'images/format.png' %}"> </th>
+                          <td class="text-right">Paint</td>
+                          <td class="text-right">2</td>
+                              <img class="imgarrows" src="{% static 'images/arrow up.png' %}">
+                              <img class="imgarrows" src="{% static 'images/arrow down.png' %}">
+                          <td class="text-right">$20</td>
+                          <td class="text-right">$40</td>
+                        </tr>
+                        <tr>
+                          <th scope="row"><img style="width: 100px;" src="{% static 'images/format.png' %}"></th>
+                          <td class="text-right">Mark</td>
+                          <td class="text-right">Otto</td>
+                          <td class="text-right">@mdo</td>
+                        </tr>
+                   </tbody>
+              </table>
+            </p>
+          </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
