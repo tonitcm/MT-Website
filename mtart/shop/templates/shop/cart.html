@@ -18,7 +18,7 @@
                       <th class="text-right">Total cost:</th>
               </table>
             </p>
-            <a href="#" class="btn btn-outline-success float-right">Checkout</a>
+          <a href="{% url 'checkout' %}" class="btn btn-outline-success float-right">Checkout</a>
           </div>
         </div>
     </div>
@@ -41,17 +41,16 @@
                         <tr>
                           <th scope="row"> <img style="width: 100px;" src="{% static 'images/format.png' %}"> </th>
                           <td class="text-right">Paint</td>
-                          <td class="text-right">2</td>
-                              <img class="imgarrows" src="{% static 'images/arrow up.png' %}">
-                              <img class="imgarrows" src="{% static 'images/arrow down.png' %}">
+                          <td class="text-right"><input class= "cart-quantity" min="0" name="quantity" value="1" type="number"> </td>
                           <td class="text-right">$20</td>
                           <td class="text-right">$40</td>
                         </tr>
                         <tr>
                           <th scope="row"><img style="width: 100px;" src="{% static 'images/format.png' %}"></th>
-                          <td class="text-right">Mark</td>
-                          <td class="text-right">Otto</td>
-                          <td class="text-right">@mdo</td>
+                          <td class="text-right">Paint</td>
+                          <td class="text-right"><input class= "cart-quantity" min="0" name="quantity" value="1" type="number"> </td>
+                          <td class="text-right">20</td>
+                          <td class="text-right">40</td>
                         </tr>
                    </tbody>
               </table>

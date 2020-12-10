@@ -16,12 +16,25 @@
     border: none;
 }
 
-.imgarrows {
+/* Cart qauntity button */
+.cart-quantity {
+    width: 40px;
+    background-size: cover;
 
-    position: relative;
-    top: 84px;
-    margin-left: 465px;
-    margin-right: auto;
-    width: 10px;
-    display: block;
+}
+
+/* Checkout table 1 height */
+.checkout-table1 {
+    margin-top: 150px;
+}
+
+/* Checkout table 2 height */
+.checkout-table2 {
+    margin-top: 150px;
+}
+
+
+/* Paypal hidden */
+.hidden {
+    display: none;
 }
