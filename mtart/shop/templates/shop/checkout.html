@@ -66,7 +66,7 @@
                   <table class="table borderless">
                       <thead class="thead-dark">
                             <tr>
-                              <th style="border: 0;"><a href="{% url 'gallery' %}" class="btn btn-secondary btn-sm">&#x2190; Back to Cart</a></th>
+                              <th style="border: 0;"><a href="{% url 'cart' %}" class="btn btn-secondary btn-sm">&#x2190; Back to Cart</a></th>
                               <th style="border: 0;"></th>
                               <th style="border: 0;"></th>
                               <th style="border: 0;"></th>
@@ -80,15 +80,17 @@
                             </tr>
                       </thead>
                        <tbody>
+                       {% for item in items%}
                             <tr>
-                              <th scope="row"> <img style="width: 100px;" src="{% static 'images/format.png' %}"> </th>
-                              <td>Paint</td>
-                              <td class="text-right">x2 </td>
-                              <td class="text-right">$40</td>
+                              <th> <img style="width: 60px;" src="{% static 'images/viajar.jpg' %}"> </th>
+                              <td>{{item.product.name}}</td>
+                              <td>{{item.quantity}} </td>
+                              <td>{{item.product.price}}</td>
                             </tr>
-                            <th>Items:</th>
+                       {% endfor %}
+                            <th>Items: {{order.get_cart_items}}</th>
                             <tr></tr>
-                            <th>Total Cost:</th>
+                            <th>Total Cost: {{order.get_cart_total}}</th>
                        </tbody>
                   </table>
                 </p>
@@ -97,8 +99,6 @@
        </div>
     </div>
 </div>
-
-
 
 
 

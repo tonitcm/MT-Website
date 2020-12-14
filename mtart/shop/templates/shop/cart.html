@@ -14,8 +14,8 @@
               <table class="table borderless">
                   <tbody>
                       <td>Account Name</td>
-                      <td>Items</td>
-                      <th class="text-right">Total cost:</th>
+                      <td class="text-right">Items: {{order.get_cart_items}}</td>
+                      <th class="text-right">Total cost: {{order.get_cart_total}}</th>
               </table>
             </p>
           <a href="{% url 'checkout' %}" class="btn btn-outline-success float-right">Checkout</a>
@@ -23,6 +23,8 @@
         </div>
     </div>
 </div>
+
+
 <div class="container">
     <div class="row justify-content-center" >
         <div class="card w-75">
@@ -37,28 +39,24 @@
                       <th class="text-right" scope="col">Total Price</th>
                     </tr>
                   </thead>
+                      {% for item in items%}
                    <tbody>
                         <tr>
-                          <th scope="row"> <img style="width: 100px;" src="{% static 'images/format.png' %}"> </th>
-                          <td class="text-right">Paint</td>
-                          <td class="text-right"><input class= "cart-quantity" min="0" name="quantity" value="1" type="number"> </td>
-                          <td class="text-right">$20</td>
-                          <td class="text-right">$40</td>
-                        </tr>
-                        <tr>
-                          <th scope="row"><img style="width: 100px;" src="{% static 'images/format.png' %}"></th>
-                          <td class="text-right">Paint</td>
-                          <td class="text-right"><input class= "cart-quantity" min="0" name="quantity" value="1" type="number"> </td>
-                          <td class="text-right">20</td>
-                          <td class="text-right">40</td>
+                          <th scope="row"> <img style="width: 100px;" src="{% static 'images/viajar.jpg' %}"> </th>
+                          <td class="text-right">{{item.product.name}}</td>
+                          <td class="text-right"><input class= "cart-quantity" min="0" name="quantity" value="{{item.quantity}}" type="number"> </td>
+                          <td class="text-right">${{item.product.price}}</td>
+                          <td class="text-right">${{item.get_total}}</td>
                         </tr>
                    </tbody>
+                   {% endfor %}
               </table>
             </p>
           </div>
         </div>
     </div>
 </div>
+
 
 
 

@@ -26,12 +26,37 @@ def about(request):
     return render(request, "shop/about.html", context)
 
 def gallery(request):
-    return render(request, "shop/gallery.html")
+
+    products = Product.objects.all()
+
+    return render(request, "shop/gallery.html", {'products': products})
 
 def cart(request):
-    return render(request, "shop/cart.html")
+
+    #for authenticator user, logged or not logged in
+    if request.user.is_authenticated:
+        customer = request.user.customer #one to one relationship
+        order, created = Order.objects.get_or_create(customer=customer)#querying an object or creating one
+        items = order.orderitem_set.all()
+    else: #non-logged in user cart
+        items = []
+        order = {'get_cart_total': 0, 'get_cart_items': 0}
+
+    context = {'items': items, 'order': order}
+
+    return render(request, "shop/cart.html", context)
 
 def checkout(request):
-    return render(request, "shop/checkout.html")
+
+    if request.user.is_authenticated:
+        customer = request.user.customer #one to one relationship
+        order, created = Order.objects.get_or_create(customer=customer)#querying an object or creating one
+        items = order.orderitem_set.all()
+    else: #non-logged in user cart
+        items = []
+        order = {'get_cart_total': 0, 'get_cart_items': 0}
+
+    context = {'items': items, 'order': order}
+    return render(request, "shop/checkout.html", context)
 
 
