@@ -7,14 +7,14 @@
     <div class="row justify-content-center" style = "">
       {% for product in products %}
         <div class="col-md-5" >
-          <img class="card-img-top" src="{% static 'images/viajar.jpg' %}" alt="Card image cap">
+          <img style="width: 400px; height: 400px;" class="card-img-top" src="{{product.images.url}}" alt="Card image cap">
           <div class="card-body">
             <h5 class="card-title">{{product.name}}</h5>
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
           </div>
           <div class="card-body">
             <a href="#" class="btn btn-outline-success">View</a>
-            <a href="#" class="btn btn-outline-success">Add to Cart</a>
+            <a data-product={{product.id}} data-action="add" href="#" class="btn btn-outline-success update-cart">Add to Cart</a>
             <h5 style="display: inline-block;float:right;">${{product.price|floatformat:0}}</h5>
           </div>
         </div>

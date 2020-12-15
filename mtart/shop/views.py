@@ -1,12 +1,14 @@
 from django.shortcuts import render
+from django.http import JsonResponse
+
 from .models import *
 
 def home(request):
     return render(request, "shop/home.html")
 
-def customer(request, pk):
+def customer(request):
 
-    customer = Customer.objects.get(id=pk)
+    customer = Customer.objects.get()
     orders = customer.order_set.all()
     order_count = orders.count()
     context = {'customer': customer, 'orders': orders, 'order_count': order_count}
@@ -25,11 +27,30 @@ def about(request):
 
     return render(request, "shop/about.html", context)
 
-def gallery(request):
+def gallery(request, pk):
 
-    products = Product.objects.all()
+    product = Product.objects.get(id=pk)
 
-    return render(request, "shop/gallery.html", {'products': products})
+    if request.method == 'POST':
+        product = Product.objects.get(id=pk)
+        try:
+            customer = request.user.customer #logged in user
+
+        except:
+            device = request.COOKIES['device']
+            customer, created = Customer.objects.get_or_create(device=device) #create or get a device id for the customer
+
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
+        orderItem.quantity = request.POST['quantity']
+        orderItem.save()
+
+        return redirect('cart')
+
+    context = {'product':product}
+
+    return render(request, "shop/gallery.html", context)
+
 
 def cart(request):
 
@@ -59,4 +80,5 @@ def checkout(request):
     context = {'items': items, 'order': order}
     return render(request, "shop/checkout.html", context)
 
-
+def update_item(request):
+    return JsonResponse('Item was added', safe=False) #get this message on template

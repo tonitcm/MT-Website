@@ -6,6 +6,7 @@ class Customer(models.Model):
     name = models.CharField(max_length=200, null=True)
     email = models.CharField(max_length=200, null=True)
     contact = models.CharField(max_length=200, null=True)
+    device = models.CharField(max_length=200, null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
@@ -33,7 +34,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-"""
+
     @property #attribute rather than a method keeps things simples
     def imageURL(self):
         try:
@@ -41,7 +42,7 @@ class Product(models.Model):
         except:
             url = ""
         return url
-"""
+
 
 class Order(models.Model):
     STATUS =(
