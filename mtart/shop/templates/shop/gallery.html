@@ -10,17 +10,18 @@
           <img style="width: 400px; height: 400px;" class="card-img-top" src="{{product.images.url}}" alt="Card image cap">
           <div class="card-body">
             <h5 class="card-title">{{product.name}}</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
           </div>
           <div class="card-body">
+            <form method="POST" action="{% url 'product' product.id %}">
             <a href="#" class="btn btn-outline-success">View</a>
-            <a data-product={{product.id}} data-action="add" href="#" class="btn btn-outline-success update-cart">Add to Cart</a>
+              {% csrf_token %}
+              <input class="btn btn-outline-success" type="submit" value="Add to Cart">
             <h5 style="display: inline-block;float:right;">${{product.price|floatformat:0}}</h5>
+            </form>
           </div>
         </div>
        {% endfor %}
     </div>
 </div>
-
 
 {% endblock %}

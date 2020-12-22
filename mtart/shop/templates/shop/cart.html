@@ -39,12 +39,19 @@
                       <th class="text-right" scope="col">Total Price</th>
                     </tr>
                   </thead>
-                      {% for item in items%}
+                      {% for item in order.orderitem_set.all%}
                    <tbody>
                         <tr>
-                          <th scope="row"> <img style="width: 100px;" src="{% static 'images/viajar.jpg' %}"> </th>
+                          <th scope="row"> <img style="width: 100px;" src="{{item.product.images.url}}"> </th>
                           <td class="text-right">{{item.product.name}}</td>
-                          <td class="text-right"><input class= "cart-quantity" min="0" name="quantity" value="{{item.quantity}}" type="number"> </td>
+                          <form action="" method="POST">
+                              {% csrf_token %}
+                          <td class="text-right">
+                              <input data-action="add" class="update-cart" type="button" onclick="decrementValue()" value="-" />
+                              <input type="text" name="quantity" value="{{item.quantity}}" maxlength="1" max="10" size="1" id="number" />
+                              <input data-action="remove" class="update-cart" type="button" onclick="incrementValue()" value="+" />
+                          </td>
+                          </form>
                           <td class="text-right">${{item.product.price}}</td>
                           <td class="text-right">${{item.get_total}}</td>
                         </tr>
