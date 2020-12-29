@@ -47,9 +47,9 @@
                           <form action="" method="POST">
                               {% csrf_token %}
                           <td class="text-right">
-                              <input data-action="add" class="update-cart" type="button" onclick="decrementValue()" value="-" />
+                              <input data-product={{item.product.id}} data-action="remove" class="update-cart" type="button"  value="-" />
                               <input type="text" name="quantity" value="{{item.quantity}}" maxlength="1" max="10" size="1" id="number" />
-                              <input data-action="remove" class="update-cart" type="button" onclick="incrementValue()" value="+" />
+                              <input data-product={{item.product.id}} data-action="add" class="update-cart" type="button" value="+" />
                           </td>
                           </form>
                           <td class="text-right">${{item.product.price}}</td>

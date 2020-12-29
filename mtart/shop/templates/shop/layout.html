@@ -10,13 +10,11 @@
     <link rel="stylesheet" href= "{% static '/css/layout.css' %}">
     <link rel="stylesheet" href= "{% static '/images/' %}">
 
-    <!-- This javascript sets our cookies for a unique ID unauthenticate user, go application in inspection website to check it -->
-    <!-- Unique id generator which is the function uuidv4 -->
-    <!-- Cookie for user on website -->
-
+    <!--creating a function to create an CSRF TOKEN through javascript-->
     <script type="text/javascript">
+        var user = '{{request.user}}'
 
-        function getCookie(name) {
+        function getToken(name) {
             let cookieValue = null;
             if (document.cookie && document.cookie !== '') {
                 const cookies = document.cookie.split(';');
@@ -31,22 +29,7 @@
             }
             return cookieValue;
         }
-
-        function uuidv4() {
-		 return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-		    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-		    return v.toString(16);
-		  });
-		}
-
-        let device = getCookie('device')
-
-        if (device == null || device == undefined) {
-            device = uuidv4()
-        }
-
-        document.cookie ='device=' + device + ";domain=;path=/"
-
+        const csrftoken = getToken('csrftoken');
     </script>
 
 </head>
@@ -61,7 +44,8 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script type="text/javascript" src="{% static '/js/cart.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
 
 </body>
 </html>

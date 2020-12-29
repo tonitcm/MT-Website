@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
+import json
+import datetime
 
 from .models import *
 
@@ -29,98 +31,107 @@ def about(request):
 
 def gallery(request):
 
-    products = Product.objects.all()
+    if request.user.is_authenticated:
+        customer = request.user.customer  # one to one relationship
+        order, created = Order.objects.get_or_create(customer=customer)  # querying an object or creating one
+        items = order.orderitem_set.all()
+        cartItems = order.get_cart_items
+    else:  # non-logged in user cart
+        items = []
+        order = {'get_cart_total': 0, 'get_cart_items': 0}
+        cartItems = order['get_cart_items']
 
-    context = {'products':products}
+    products = Product.objects.all()
+    context = {'products': products, 'cartItems': cartItems}
 
     return render(request, "shop/gallery.html", context)
 
-def product(request, pk):
-
-    product = Product.objects.get(id=pk)
-
-    if request.method == 'POST':
-        product = Product.objects.get(id=pk)
-        try:
-            customer = request.user.customer  # logged in user
-
-        except:
-            device = request.COOKIES['device']
-            customer, created = Customer.objects.get_or_create(device=device)  # create or get a device id for the customer
-
-        order, created = Order.objects.get_or_create(customer=customer)
-        orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
-        orderItem.quantity += 1
-        orderItem.save()
-
-
-        return redirect('cart')
-
-    context = {'product':product}
-
-    return render(request, "shop/cart.html", context)
 
 def cart(request):
 
+#checks if it is a logged in user or not
 
-        try:
-            customer = request.user.customer  # logged in user
-
-        except:
-            device = request.COOKIES['device']
-            customer, created = Customer.objects.get_or_create(device=device)  # create or get a device id for the customer
-
-        order, created = Order.objects.get_or_create(customer=customer)
-
-
-        context = {'order': order}
-
-        return render(request, "shop/cart.html", context)
+    if request.user.is_authenticated:
+        customer = request.user.customer  # one to one relationship
+        order, created = Order.objects.get_or_create(customer=customer)  # querying an object or creating one
+        items = order.orderitem_set.all()
+        cartItems = order.get_cart_items
+    else:  # non-logged in user cart
+        items = []
+        order = {'get_cart_total': 0, 'get_cart_items': 0}
+        cartItems = order['get_cart_items']
 
 
-def checkout(request):
-
-    try:
-        customer = request.user.customer
-    except:
-        device = request.COOKIES['device']
-        customer, created = Customer.objects.get_or_create(device=device)
-
-    order, created = Order.objects.get_or_create(customer=customer)
-
-    context = {'order': order}
-
-    return render(request, "shop/checkout.html", context)
-
-def update_item(request, pk):
-
-
-
-    if request.POST:
-        try:
-            customer = request.POST.get(id=pk)
-
-        except:
-            device = request.COOKIES['device']
-            customer, created = Customer.objects.get_or_create(device=device)
-
-        order, created = Order.objects.get_or_create(customer=customer)
-        orderItem, created = OrderItem.objects.get_or_create(product=product, order=order)
-        product_id = request.POST.get(id=pk)
-
-
-    context = {'customer': customer}
+    context = {'items': items, 'order': order, 'cartItems': cartItems}
 
     return render(request, "shop/cart.html", context)
 
-"""
 
+def checkout(request):
     if request.user.is_authenticated:
-        customer = request.user.customer #one to one relationship
-        order, created = Order.objects.get_or_create(customer=customer)#querying an object or creating one
+        customer = request.user.customer  # one to one relationship
+        order, created = Order.objects.get_or_create(customer=customer)  # querying an object or creating one
         items = order.orderitem_set.all()
-    else: #non-logged in user cart
+        cartItems = order.get_cart_items
+    else:  # non-logged in user cart
         items = []
         order = {'get_cart_total': 0, 'get_cart_items': 0}
+        cartItems = order['get_cart_items']
 
-"""
+    context = {'items': items, 'order': order, 'cartItems': cartItems}
+
+    return render(request, "shop/checkout.html", context)
+
+def updateItem(request):
+
+    data = json.loads(request.body)
+    productId = data['productId']
+    action = data['action']
+
+    print('Action:', action) #prints out the action "add"
+    print('productId', productId) #prints out the productId
+
+    customer = request.user.customer
+    product = Product.objects.get(id=productId)
+    order, created = Order.objects.get_or_create(customer=customer)
+
+    orderItem, created = OrderItem.objects.get_or_create(order=order, product=product) #change the quantity of the order item
+
+    if action == 'add':
+        orderItem.quantity = (orderItem.quantity + 1)
+    elif action == 'remove':
+        orderItem.quantity = (orderItem.quantity - 1)
+
+    orderItem.save()
+
+    if orderItem.quantity <= 0:
+        orderItem.delete()
+
+    return JsonResponse('Item was added', safe=False)
+
+
+def processOrder(request):
+
+    transaction_id = datetime.datetime.now().timestamp()
+    data = json.loads(request.body)
+    print('Data', request.body)
+    
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer)
+        total = float(data['form']['total'])
+        order.transaction_id = transaction_id
+
+        # to prevent manipulation of data, check if total that is passed in is the same as cart total
+        if total == order.get_cart_total:
+            order.complete = True
+        order.save()
+
+    else:
+        print('User is not logged in')
+
+
+
+
+    return JsonResponse('Payment complete', safe=False)
+

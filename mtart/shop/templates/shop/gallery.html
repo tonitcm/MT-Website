@@ -12,12 +12,9 @@
             <h5 class="card-title">{{product.name}}</h5>
           </div>
           <div class="card-body">
-            <form method="POST" action="{% url 'product' product.id %}">
             <a href="#" class="btn btn-outline-success">View</a>
-              {% csrf_token %}
-              <input class="btn btn-outline-success" type="submit" value="Add to Cart">
+              <input data-product="{{product.id}}" data-action="add" class="btn btn-outline-success update-cart" type="submit" value="Add to Cart">
             <h5 style="display: inline-block;float:right;">${{product.price|floatformat:0}}</h5>
-            </form>
           </div>
         </div>
        {% endfor %}

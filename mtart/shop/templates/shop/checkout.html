@@ -10,9 +10,9 @@
         <div class="col-sm-7 checkout-table1">
          <div class="card border">
           <div class="card-body">
-           <form>
-              <div class="form-row">
-                <div class="form-group col-md-6">
+           <form id="form">
+              <div class="form-row" id="user-info" >
+                <div class="form-group col-md-6" >
                   <label for="inputEmail4">Email</label>
                   <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
                 </div>
@@ -22,36 +22,37 @@
                 </div>
               </div>
 
-               <div class="form-row">
+               <div class="form-row" >
                 <div class="form-group col-md-6">
                   <label for="inputAdress">Adress</label>
-                  <input type="text" class="form-control" id="inputAdress">
+                  <input type="text" class="form-control" id="inputAdress" name="address">
                 </div>
                 <div class="form-group col-md-6">
                   <label for="inputCity">City</label>
-                  <input type="text" class="form-control" id="inputCity">
+                  <input type="text" class="form-control" id="inputCity" name="city">
                 </div>
               </div>
 
-               <div class="form-row">
+               <div class="form-row" id="continue-button">
                 <div class="form-group col-md-6">
                   <label for="inputZip">Zip</label>
-                  <input type="text" class="form-control" id="inputZip">
+                  <input type="text" class="form-control" id="inputZip" name="zip">
                 </div>
               </div>
-              <button style="width: 600px;" type="submit" class="btn btn-success">Continue</button>
+              <button  style="width: 600px;" type="submit" class="btn btn-success">Continue</button>
+              </div>
             </form>
 
-          </div>
        </div>
 
             <form>
-                <div class="card border hidden">
+                <div  class="card border hidden" id= "payment-info">
                   <div class="form-row">
                     <div class="form-group col-md-6">
                           <div class="form-check">
                               <br>
                               <label>Paypal Option</label>
+                              <button id="make-payment">Make Payment</button>
                           </div>
                     </div>
                   </div>
@@ -101,8 +102,75 @@
 </div>
 
 <script type="text/javascript">
-    var shipping = '{{order.shipping}}'
+
+    var total = '{{order.get_cart_total|floatformat:2}}'
+
+    // if it is a logged in user hide name and email inputs
+
+    if (user != 'AnonymousUser'){
+        document.getElementById('user-info').innerHTML = ''
+    }
+
+
+
+    var form = document.getElementById('form')
+
+    form.addEventListener('submit', function(e){
+        e.preventDefault()
+        console.log('Form submitted..')
+        document.getElementById('continue-button').classList.add('hidden')
+        document.getElementById('payment-info').classList.remove('hidden')
+    })
+
+    document.getElementById('make-payment').addEventListener('click', function(e){
+        submitFormData()
+    })
+
+    function submitFormData(){
+        console.log('Payment button clicked')
+
+        var userFormData = {
+            'name': null,
+            'email': null,
+            'total': total,
+
+        }
+
+        var shippingInfo = {
+            'address': null,
+            'city': null,
+            'zip': null,
+
+        }
+
+
+            shippingInfo.address = form.address.value
+            shippingInfo.city = form.city.value
+            shippingInfo.zip = form.zip.value
+
+        if(user == 'AnonymousUser'){
+            userFormData.none = form.name.value
+            userFormData.none = form.email.value
+        }
+
+        var url = '/process_order/'
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-CSRFToken': csrftoken,
+            },
+            body:JSON.stringify({'form': userFormData})
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log('Success:', data);
+            alert('Transaction completed');
+            window.location.href = "{% url 'gallery' %}"
+        })
+}
+
 </script>
 
 
-{% endblock %}
+{% endblock name %}
